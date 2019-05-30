@@ -4,14 +4,24 @@ from inspect import isfunction
 
 
 def quick_sort(array: list, key_func=lambda x: x) -> list:
-    pass
+    if key_func is not None:
+        assert isfunction(key_func)
+
+    if len(array) <= 1:
+        return array
+
+    left_array, right_array = [], []
+    for item in array[1:]:
+        left_array.append(item) if key_func(item) < key_func(array[0]) else right_array.append(item)
+
+    return quick_sort(left_array, key_func) + [array[0]] + quick_sort(right_array, key_func)
 
 
 def shell_sort(array: list, key_func=lambda x: x) -> list:
     if key_func is not None:
         assert isfunction(key_func)
 
-    if len(array) < 1:
+    if len(array) <= 1:
         return array
 
     if len(array) == 2:
@@ -46,11 +56,11 @@ def insertion_sort(array: list, key_func=lambda x: x) -> list:
 
     for pos in range(1, len(array)):
         insert_item = array[pos]
-        idx = pos-1
+        idx = pos - 1
         while key_func(array[idx]) > key_func(insert_item) and idx >= 0:
-            array[idx+1] = array[idx]
+            array[idx + 1] = array[idx]
             idx -= 1
-        array[idx+1] = insert_item
+        array[idx + 1] = insert_item
     return array
 
 
@@ -62,9 +72,9 @@ def bubble_sort(array: list, key_func=lambda x: x) -> list:
         assert isfunction(key_func)
 
     for pos in range(0, len(array)):
-        for idx in range(0, len(array)-pos-1):
-            if key_func(array[idx]) > key_func(array[idx+1]):
-                array[idx], array[idx+1] = array[idx+1], array[idx]
+        for idx in range(0, len(array) - pos - 1):
+            if key_func(array[idx]) > key_func(array[idx + 1]):
+                array[idx], array[idx + 1] = array[idx + 1], array[idx]
     return array
 
 
@@ -103,11 +113,10 @@ def _assert_sorted(origin_array: list, array: list, key_func=lambda x: x) -> boo
 
 
 if __name__ == '__main__':
-    unsort_array = [random.randrange(-99, 99) for _ in range(40)]
+    unsort_array = [random.randrange(-99, 99) for _ in range(15)]
     sorted(unsort_array)
     print(unsort_array)
     copy_array = unsort_array.copy()
-    sorted_array = shell_sort(unsort_array)
+    sorted_array = quick_sort(unsort_array)
     print(sorted_array)
     print(_assert_sorted(copy_array, sorted_array))
-
