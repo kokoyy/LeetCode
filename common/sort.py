@@ -3,6 +3,18 @@ import random
 from inspect import isfunction
 
 
+def radix_sort(array: list, key_func=lambda x: x) -> list:
+    pass
+
+
+def heap_sort(array: list, key_func=lambda x: x) -> list:
+    pass
+
+
+def merge_sort(array: list, key_func=lambda x: x) -> list:
+    pass
+
+
 def quick_sort(array: list, key_func=lambda x: x) -> list:
     if key_func is not None:
         assert isfunction(key_func)
